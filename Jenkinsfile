@@ -3,14 +3,17 @@ pipeline {
 
     stages {
 
-        stage('Create Different Files') {
+        stage('Build') {
             steps {
                 sh '''
-                    echo "This is a report" > report.txt
-                    echo "This is a log" > application.log
-                    echo "name=25aug" > config.properties
+                    mkdir -p package
 
-                    ls -la
+                    echo "Application version 1.0" > package/app.txt
+                    echo "Configuration data" > package/config.txt
+
+                    zip -r application.zip package/
+
+                    ls -lh
                 '''
             }
         }
@@ -18,7 +21,7 @@ pipeline {
 
     post {
         always {
-            archiveArtifacts artifacts: '*.txt, *.log, *.properties'
+            archiveArtifacts artifacts: 'application.zip'
         }
     }
 }
