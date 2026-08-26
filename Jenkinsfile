@@ -3,32 +3,14 @@ pipeline {
 
     stages {
 
-        stage('Build') {
+        stage('Create Different Files') {
             steps {
                 sh '''
-                    echo "Jenkins Pipeline Report" > report.txt
-                    echo "Job Name: $JOB_NAME" >> report.txt
-                    echo "Build Number: $BUILD_NUMBER" >> report.txt
-                    echo "Build Date: $(date)" >> report.txt
+                    echo "This is a report" > report.txt
+                    echo "This is a log" > application.log
+                    echo "name=25aug" > config.properties
 
-                    echo "Build completed successfully" > build.log
-
-                    echo "Application=25aug" > config.txt
-
-                    echo "Created files:"
                     ls -la
-                '''
-            }
-        }
-
-        stage('Test') {
-            steps {
-                sh '''
-                    test -f report.txt
-                    test -f build.log
-                    test -f config.txt
-
-                    echo "All tests passed!"
                 '''
             }
         }
@@ -36,7 +18,7 @@ pipeline {
 
     post {
         always {
-            archiveArtifacts artifacts: 'report.txt, build.log, config.txt'
+            archiveArtifacts artifacts: '*.txt, *.log, *.properties'
         }
     }
 }
